@@ -19,7 +19,7 @@ permissions:
   attestations: write
   id-token: write
 
-run-name: ${{ inputs.docker_images }}
+run-name: To [${{ inputs.registry }}] ${{ inputs.docker_images }}
 
 jobs:
   sync:
