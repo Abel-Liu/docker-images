@@ -27,6 +27,8 @@ jobs:
       - name: Get env
         run: |
           echo "REGISTRY=ghcr.io" >> $GITHUB_ENV
+          repo_name=`echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'`
+          echo "REPO_NAME=$repo_name" >> $GITHUB_ENV
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -49,10 +51,11 @@ jobs:
               tag=latest              #不包含冒号，即没有写tag
             fi
             repo=${repo%:*}           #去除:后边的
+            repo="${repo//\//_}"      #替换/
 
             echo "Syncing repo: $repo, tag: $tag"
 
             docker pull $image
-            docker tag $image ${{ env.REGISTRY }}/${{ github.repository }}:$repo___$tag
-            docker push ${{ env.REGISTRY }}/${{ github.repository }}:$repo___$tag
+            docker tag $image ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:$repo__$tag
+            docker push ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:$repo__$tag
           done
