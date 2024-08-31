@@ -1,4 +1,4 @@
-name: sync-docker-to-github
+name: sync-docker
 
 on:
   workflow_dispatch:
