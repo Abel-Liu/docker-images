@@ -51,11 +51,10 @@ jobs:
               tag=latest              #不包含冒号，即没有写tag
             fi
             repo=${repo%:*}           #去除:后边的
-            repo="${repo//\//_}"      #替换/
 
             echo "Syncing repo: $repo, tag: $tag"
 
             docker pull $image
-            docker tag $image ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:$repo__$tag
-            docker push ${{ env.REGISTRY }}/${{ env.REPO_NAME }}:$repo__$tag
+            docker tag $image ${{ env.REGISTRY }}/$repo:$tag
+            docker push ${{ env.REGISTRY }}/$repo:$tag
           done
