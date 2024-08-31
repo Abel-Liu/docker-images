@@ -74,7 +74,11 @@ jobs:
             else
               tag=latest              #不包含冒号，即没有写tag
             fi
+
             repo=${repo%:*}           #去除:后边的
+            if [[ $REGISTRY =~ "ali" ]]; then
+              repo="${repo//\//-}"    #替换/
+            fi
 
             echo "Syncing repo: $repo, tag: $tag"
 
