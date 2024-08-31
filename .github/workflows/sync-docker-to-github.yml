@@ -13,6 +13,8 @@ permissions:
   attestations: write
   id-token: write
 
+run-name: ${{ inputs.docker_images }}
+
 jobs:
   sync:
     name: pull and push
@@ -55,6 +57,6 @@ jobs:
             echo "Syncing repo: $repo, tag: $tag"
 
             docker pull $image
-            docker tag $image ${{ env.REGISTRY }}/$repo:$tag
-            docker push ${{ env.REGISTRY }}/$repo:$tag
+            docker tag $image ${{ env.REGISTRY }}/abel-liu/$repo:$tag
+            docker push ${{ env.REGISTRY }}/abel-liu/$repo:$tag
           done
