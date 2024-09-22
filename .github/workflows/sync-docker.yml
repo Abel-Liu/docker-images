@@ -7,6 +7,7 @@ on:
         required: true
         type: choice
         options:
+          - ygbj
           - ghcr
           - ali
       docker_images:
@@ -36,14 +37,19 @@ jobs:
         if: inputs.registry == 'ghcr'
         run: |
           echo "REGISTRY=ghcr.io" >> $GITHUB_ENV
-          owner=`echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
+          owner=`echo "${{ github.repository_owner }}/" | tr '[:upper:]' '[:lower:]'`
           echo "OWNER=$owner" >> $GITHUB_ENV
 
       - name: Get env2
         if: inputs.registry == 'ali'
         run: |
           echo "REGISTRY=registry.cn-beijing.aliyuncs.com" >> $GITHUB_ENV
-          echo "OWNER=abelrepo" >> $GITHUB_ENV
+          echo "OWNER=abelrepo/" >> $GITHUB_ENV
+
+      - name: Get env3
+        if: inputs.registry == 'ygbj'
+        run: |
+          echo "REGISTRY=ygbjregistry.azurecr.cn" >> $GITHUB_ENV
 
       - name: Log in to ghcr
         if: inputs.registry == 'ghcr'
@@ -60,6 +66,14 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.ALI_DOCKER_USER }}
           password: ${{ secrets.ALI_DOCKER_PWD }}
+
+      - name: Login to ygbj
+        if: inputs.registry == 'ygbj'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.YGBJ_DOCKER_USER }}
+          password: ${{ secrets.YGBJ_DOCKER_PWD }}
 
       - name: push
         run: |
@@ -83,6 +97,6 @@ jobs:
             echo "Syncing repo: $repo, tag: $tag"
 
             docker pull $image
-            docker tag $image ${{ env.REGISTRY }}/${{ env.OWNER }}/$repo:$tag
-            docker push ${{ env.REGISTRY }}/${{ env.OWNER }}/$repo:$tag
+            docker tag $image ${{ env.REGISTRY }}/${{ env.OWNER }}$repo:$tag
+            docker push ${{ env.REGISTRY }}/${{ env.OWNER }}$repo:$tag
           done
