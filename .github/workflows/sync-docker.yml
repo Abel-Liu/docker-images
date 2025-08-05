@@ -7,7 +7,7 @@ on:
         required: true
         type: choice
         options:
-          - ygbj
+          - pdp
           - ghcr
           - ali
       docker_images:
@@ -47,9 +47,9 @@ jobs:
           echo "OWNER=abelrepo/" >> $GITHUB_ENV
 
       - name: Get env3
-        if: inputs.registry == 'ygbj'
+        if: inputs.registry == 'pdp'
         run: |
-          echo "REGISTRY=ygbjregistry.azurecr.cn" >> $GITHUB_ENV
+          echo "REGISTRY=pppdocker.azurecr.cn" >> $GITHUB_ENV
 
       - name: Log in to ghcr
         if: inputs.registry == 'ghcr'
@@ -68,12 +68,12 @@ jobs:
           password: ${{ secrets.ALI_DOCKER_PWD }}
 
       - name: Login to ygbj
-        if: inputs.registry == 'ygbj'
+        if: inputs.registry == 'pdp'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.YGBJ_DOCKER_USER }}
-          password: ${{ secrets.YGBJ_DOCKER_PWD }}
+          username: ${{ secrets.PDP_DOCKER_USER }}
+          password: ${{ secrets.PDP_DOCKER_PWD }}
 
       - name: push
         run: |
