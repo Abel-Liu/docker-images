@@ -7,8 +7,8 @@ on:
         required: true
         type: choice
         options:
-          - ghcr
           - ali
+          - ghcr
       docker_images:
         description: "docker镜像 英文逗号分开"
         required: true
